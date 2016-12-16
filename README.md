@@ -1,5 +1,5 @@
-# Universal Linking For React-Native and Rails and Deep Linking Android
-Just a tutorial on how to set up Universal Linking iOS with a Rails server and Deep Linking on an Android device.
+# Universal Linking For React-Native with Rails API, and Deep Linking Android
+Just a tutorial on how to set up Universal Linking for iOS with a Rails server, and Deep Linking on an Android device.
 
 ## iOS
 - Universal Linking allows users to click on a link from a text message or email and your app will `magically` launch
@@ -12,26 +12,26 @@ Just a tutorial on how to set up Universal Linking iOS with a Rails server and D
 
 1.  You have to set up your server
 2.  Your server must use HTTPS or else the set-up sucks and and these instructions will not work for you
-2.  The links you provide to users have should go to a valid web page should they not have the app installed.  It's a fallback.
+2.  The links you provide to users should go to a valid web page should they not have the app installed.  It's a fallback and good UX.
 3.  You have to have a developer account with iTunes to test on your device
-4.  You have to configure your app
+4.  You have to configure your app to handle the link/parse it for pertinent information.
 
-#### Universal Linking does not support iOS < 9.  You want to support old version of iOS, great...good for you.  I hope you support old version of IE as well.  I do not support these old things.
+#### Universal Linking does not support iOS < 9.  You want to support old versions of iOS, great...good for you.  I hope you support old versions of IE as well...  I do not support these old things.  I also think everyone should always use flex-box...always...no exceptions :)
 
 ### Server Configuration
 
 This is where the Apple doc's didn't really help that much.  I use Rails servers and the set-up instructions weren't the best for my use case.
 
 <br>
-1.  Your link has to go to a valid web page. <br><br>
+1.  Your link should go to a valid web page. <br><br>
   - for instance the link `https://brewcards.herokuapp.com/bars/1` goes to a web page.  Should the user click the link and the app is not installed, then Safari will open to a web page.  In this example I am going to extract the `1` from the url and re-direct the user to the proper app screen and fetch data.<br><br>
 
-2.  You server has to have a route that is defined as a `get` with the path `/apple-app-site-association`  **you can not change this name**<br><br>
+2.  Your server has to have a route that is defined as a `get` with the path `/apple-app-site-association`  **you can not change this name**<br><br>
   -  Rails example `get '/apple-app-site-association' => 'whatever#whatever_method'` <br><br>
 
 3.  When a request is made to that path, you must return the proper file with the proper configuration. <a href="https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW1">Apple docs do a great job explaining this file configuration.  Click here to see how to structure your file</a>    <br><br>
 
-4.  Apple says the the file has to have a certain name and certain location.  This is not true.  You can name the file whatever the eff you want as long as you return it when the request is made to the `apple-app-site-association` url and there is no extension on the file.  It may be JSON format, just don't put .json as the extension<br><br>
+4.  Apple says the the file has to have a certain name and certain location.  This is not true.  You can name the file whatever the eff you want as long as you return it when the request is made to the `apple-app-site-association` url and there is no extension on the file.  It may be JSON format, just don't put .anything as the extension<br><br>
   - In Rails, I put the file in the `public` directory<br><br>
 
 
@@ -85,8 +85,8 @@ Do what is says in the link about. **Make sure to add the library to the header 
 ### Handle the links in your app.
 
 -  There are two scenarios you must account for.
-1.  Your app is closed and gets opened via the `Universal Linking` we have enabled
-2.  Your app is running in the background and is `woke up` from the `Universal Linking`
+1.  Your app is closed and gets opened via the `Universal Linking` we have enabled or `Deep Linking Android`
+2.  Your app is running in the background and is `woke up` from the `Universal Linking` or `Deep Linking`
 
 In your app's Navigator, add some methods to handle the Universal Linking.
 
@@ -103,7 +103,7 @@ In your app's Navigator, add some methods to handle the Universal Linking.
         })
         .catch((e) => {})
 
-   // This listener handles the case where the app is woken up from the Universal Linking
+   // This listener handles the case where the app is woken up from the Universal or Deep Linking
    Linking.addEventListener('url', this.appWokeUp);
   }
 
@@ -113,7 +113,7 @@ In your app's Navigator, add some methods to handle the Universal Linking.
   }
 
   appWokeUp = (event) => {
-    // this handles the use case where the app is running in the background and is activated by universal linking...
+    // this handles the use case where the app is running in the background and is activated by the listener...
     // Alert.alert('Linking Listener','url  ' + event.url)
     this.resetStackToProperRoute(event.url)
   }
