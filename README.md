@@ -22,11 +22,13 @@ Just a tutorial on how to set up Universal Linking iOS with a Rails server.
 
 This is where the Apple doc's didn't really help that much.  I use Rails servers and the set-up instructions weren't the best for my use case.
 
-Requirements
+<br>
 1.  Your link has to go to a valid web page. <br><br>
   - for instance the link `https://brewcards.herokuapp.com/bars/1` goes to a web page.  Should the user click the link and the app is not installed, then Safari will open to a web page.  In this example I am going to extract the `1` from the url and re-direct the user to the proper app screen and fetch data.<br><br>
+
 2.  You server has to have a route that is defined as a `get` with the path `/apple-app-site-association`  **you can not change this name**<br><br>
   -  Rails example `get '/apple-app-site-association' => 'whatever#whatever_method'` <br><br>
+
 3.  When a request is made to that path, you must return the proper file with the proper configuration. <a href="https://developer.apple.com/library/content/documentation/General/Conceptual/AppSearch/UniversalLinks.html#//apple_ref/doc/uid/TP40016308-CH12-SW1">Apple docs do a great job explaining this file configuration.  Click here to see how to structure your file</a>    <br><br>
 
 4.  Apple says the the file has to have a certain name and certain location.  This is not true.  You can name the file whatever the eff you want as long as you return it when the request is made to the `apple-app-site-association` url and there is no extension on the file.  It may be JSON format, just don't put .json as the extension<br><br>
