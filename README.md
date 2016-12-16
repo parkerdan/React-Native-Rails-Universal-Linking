@@ -56,9 +56,9 @@ end
 
 1.  In X-Code turn on Associated Domains
 2.  Add your domain.
-3.  Make sure to prefix the domain with `applinks:`
+3.  Make sure to prefix the domain with `applinks:` in place of `https://`
 
-![screenshot](./assets/ssone.png)
+![screenshot](./assets/exone.png)
 
 ### <a href="https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking">Add RCTLinking to your project</a>
 Do what is says in the link about. **Make sure to add the library to the header search path as recursive**
