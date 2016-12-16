@@ -1,5 +1,5 @@
-# Universal Linking For React-Native and Rails.
-Just a tutorial on how to set up Universal Linking iOS with a Rails server.
+# Universal Linking For React-Native and Rails and Deep Linking Android
+Just a tutorial on how to set up Universal Linking iOS with a Rails server and Deep Linking on an Android device.
 
 ## iOS
 - Universal Linking allows users to click on a link from a text message or email and your app will `magically` launch
@@ -12,7 +12,7 @@ Just a tutorial on how to set up Universal Linking iOS with a Rails server.
 
 1.  You have to set up your server
 2.  Your server must use HTTPS or else the set-up sucks and and these instructions will not work for you
-2.  The links you provide to users have to go to a valid web page should they not have the app installed.  It's a fallback.
+2.  The links you provide to users have should go to a valid web page should they not have the app installed.  It's a fallback.
 3.  You have to have a developer account with iTunes to test on your device
 4.  You have to configure your app
 
@@ -128,3 +128,45 @@ In your app's Navigator, add some methods to handle the Universal Linking.
 
 
 # Universal Linking....Boom.
+
+# Android
+
+Android is a little easier...no server configuration
+
+1.  Add an `<intent-filter>` to you `AndroidManifest.xml`
+2.  Describe what url scheme you want handled.
+3.  Profit?
+
+```xml
+<!-- Add an Intent filter withing your       
+  <activity
+    android:name=".MainActivity"
+    android:label="@string/app_name"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+
+    ...rest of stuffs
+
+    ....the intent filter below...
+  </activity>
+ -->
+
+
+ <!-- This is how you structure your Intent filter -->
+<intent-filter>
+  <!-- This is just configuration -->
+  <action android:name="android.intent.action.VIEW" />
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+
+  <!-- This is the important stuff. Link to Android docs below -->
+  <data android:scheme="https"
+        android:host="brewcards.herokuapp.com"
+        android:pathPrefix="/bars" />
+
+</intent-filter>
+
+```
+
+<a href="https://developer.android.com/training/app-indexing/deep-linking.html#adding-filters">The `<data />` attribute is the important stuff.  It defines what url schemes to intercept read about it here </a>
+
+# Deep Linking...Boom.
